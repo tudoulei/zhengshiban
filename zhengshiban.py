@@ -208,14 +208,14 @@ class zhengshiban:
 
     def select_output_file(self):
         print("select_output_file")
-        filename = QFileDialog.getSaveFileName(self.dlg, "Select output file ","", '*.txt')
+        filename = QFileDialog.getSaveFileName(self.dlg, "Select output file ","", '*.tiff')
         # print(filename)
         self.dlg.lineEdit.setText(filename[0])
 
 
     def getfeature_select_input_filename(self):
         print("select_output_file")
-        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.txt')
+        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.tiff')
         # print(filename)
         self.dlg.lineEdit_getfeature_input.setText(filename[0])
 
@@ -227,7 +227,7 @@ class zhengshiban:
 
     def clip_select_input_filename(self):
         print("select_output_file")
-        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.txt')
+        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.tiff')
 
         self.dlg.lineEdit_clip_input.setText(filename[0])
 
@@ -276,8 +276,8 @@ class zhengshiban:
         print(save_dict)
 
         if labeldict['NDVI'] == 1:
-            Band1=1
-            Band2=2
+            Band1=2
+            Band2=3
             output_filename = save_dict['NDVI']
             showname = os.path.split(output_filename)[-1]
             arr=img[Band1,:,:]
@@ -556,7 +556,7 @@ class zhengshiban:
 
         cx=0
         cy=0
-        # 
+        # 改
         while cy+outsize<wy:
             cx=0
             while cx+outsize<wx:
