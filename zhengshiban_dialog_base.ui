@@ -42,7 +42,7 @@
     <bool>false</bool>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -194,7 +194,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>F:/jupyter/地质灾害/data/RES</string>
+      <string>F:\GF-2\山阳县滑坡\test</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_getfeature_output">
@@ -236,7 +236,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>F:\jupyter\备份2019.11.15\县域农业\data\huapo\origin\caijian.tif</string>
+      <string>F:\GF-2\山阳县滑坡\caijian.tif</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_getfeature_input">
@@ -498,7 +498,7 @@ GNDVI</string>
       </rect>
      </property>
      <property name="text">
-      <string>F:/jupyter/地质灾害/data/clip</string>
+      <string>F:\GF-2\山阳县滑坡\test</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_clip_output">
@@ -527,7 +527,7 @@ GNDVI</string>
       </rect>
      </property>
      <property name="text">
-      <string>F:\jupyter\备份2019.11.15\县域农业\data\huapo\origin\caijian.tif</string>
+      <string>F:\GF-2\山阳县滑坡\caijian.tif</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_9">
