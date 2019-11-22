@@ -556,7 +556,7 @@ class zhengshiban:
 
         cx=0
         cy=0
-        # 改
+        # 秦磊修改15：13
         while cy+outsize<wy:
             cx=0
             while cx+outsize<wx:
