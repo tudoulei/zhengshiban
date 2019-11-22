@@ -336,7 +336,7 @@ class zhengshiban:
         if labeldict['GNDVI'] == 1: 
             output_filename = save_dict['GNDVI']
             showname = os.path.split(output_filename)[-1]
-            Band1=2
+            Band1=1
             Band2=3
             arr=img[Band1,:,:]
             arr1=img[Band2,:,:]
@@ -352,9 +352,8 @@ class zhengshiban:
         if labeldict['NDWI'] == 1:
             output_filename = save_dict['NDWI']
             showname = os.path.split(output_filename)[-1]
-
-            Band1=1
-            Band2=3    
+            Band1=3
+            Band2=1   
             arr=img[Band1,:,:]
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
@@ -369,12 +368,9 @@ class zhengshiban:
         if labeldict['SAVI'] == 1: 
             output_filename = save_dict['SAVI']
             showname = os.path.split(output_filename)[-1]
-
             Band1=2
             Band2=3
             L=0.5
-            Band1=3
-            Band2=1 
             arr=img[Band1,:,:]
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
@@ -394,8 +390,7 @@ class zhengshiban:
             arr=img[Band1,:,:]
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
-
-            msavi=(2*arr1+1-np.sqrt((2*arr1+1)**2-8*(arr1-arr)))*0.5
+            msavi=(2*arr1+1-np.sqrt((2*arr1+1)**2-8*(arr1-arr)))/2
             msavi1=ga.numpy.nan_to_num(msavi)
             
             out=ga.SaveArray(msavi1,save_dict['MSAVI'],format = "GTiff",prototype =gdal_data)
@@ -466,7 +461,7 @@ class zhengshiban:
         print('计算特征')
         import sys
 
-        #shgdhdhdfhshsshdhdh
+        
         
         #实例化列表模型，添加数据
    
