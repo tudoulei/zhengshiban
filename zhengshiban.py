@@ -231,6 +231,13 @@ class zhengshiban:
 
         self.dlg.lineEdit_clip_input.setText(filename[0])
 
+
+    def clip_select_input_filename_label(self):
+        print("select_output_file")
+        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.tif')
+
+        self.dlg.lineEdit_clip_input_label.setText(filename[0])
+
     def clip_select_output_filename(self):
         print("select_output_file")
         filename = QFileDialog.getExistingDirectory(self.dlg, "Select output file ")
@@ -508,10 +515,14 @@ class zhengshiban:
             
       
         in_filename = self.dlg.lineEdit_clip_input.text()
+        in_filename_label = self.dlg.lineEdit_clip_input_label.text()
         output_path = self.dlg.lineEdit_clip_output.text()
         clip_width = self.dlg.lineEdit_clip_width.text()
         clip_height = self.dlg.lineEdit_clip_height.text()
         clip_step = self.dlg.lineEdit_clip_step.text()
+
+        os.makedirs(output_path+"/clip/img/",exist_ok=1)
+        os.makedirs(output_path+"/clip/label/",exist_ok=1)
 
         from qgis.PyQt.QtWidgets import QMessageBox
         if in_filename is None or in_filename == '' or output_path is None or output_path == '' :
@@ -530,8 +541,9 @@ class zhengshiban:
         
         imagepath=in_filename
         isnot_clip_label =False
-        if 0:
-            labelname='../data/huapo/origin/label5.tif'
+
+        if in_filename_label is not None:
+            labelname = in_filename_label
             isnot_clip_label =True
         
             
@@ -576,13 +588,13 @@ class zhengshiban:
                     cx+=step
                     continue
    
-                skimage.io.imsave(output_path+'/'+name+'_{}_{}.jpg'.format(cx,cy),img2.astype(int))
+                skimage.io.imsave(output_path+"/clip/img/"+name+'_{}_{}.jpg'.format(cx,cy),img2.astype(int))
    
                 #deal with label
                 if isnot_clip_label:
                     img=dslb.ReadAsArray(cx,cy,outsize,outsize)
                     img=Image.fromarray(img).convert('L')
-                    img.save(output_path+'/'+name+'_{}_{}.jpg'.format(cx,cy))
+                    img.save(output_path+"/clip/label/"+name+'_{}_{}.jpg'.format(cx,cy))
      
                 print(cx,cy)
                 cx+=step
@@ -590,7 +602,47 @@ class zhengshiban:
         pbar.setValue(100)
 
         
-        
+    def traintestsplit_clip(self):
+        from glob import glob
+        set_path = self.dlg.lineEdit_clip_output.text()
+        test_size = self.dlg.lineEdit_traintest_testsize.text()
+        random_state = self.dlg.lineEdit_traintest_randomstate.text()
+
+
+        file_list = glob(set_path+'/clip/img/' + "*.jpg")
+        file_names=[]
+        for f in file_list:
+            file_names.append(f.split("\\")[-1].split(".jpg")[0])
+        print("File Number: ",len(file_names))
+
+        from sklearn.model_selection import train_test_split
+        x_train, x_test, y_train, y_test = train_test_split(file_names, file_names, test_size=test_size, random_state=random_state)
+        print(len(x_train))
+        print(len(x_test))
+
+        os.makedirs(set_path+"/val/img/",exist_ok=1)
+        os.makedirs(set_path+"/val/label",exist_ok=1)
+        os.makedirs(set_path+"/train/img/",exist_ok=1)
+        os.makedirs(set_path+"/train/label",exist_ok=1)
+
+        for f in x_test:
+            fname1=set_path+"/clip/img/"+f+'.jpg'
+            fname2=set_path+"/clip/label/"+f+'.jpg'
+            
+            fname1_new=set_path+"/val/img/"+f+'.jpg'
+            fname2_new=set_path+"/val/label/"+f+'.jpg'
+            
+            os.rename(fname1, fname1_new)
+            os.rename(fname2, fname2_new)  
+        for f in x_train:
+            fname1=set_path+"/clip/img/"+f+'.jpg'
+            fname2=set_path+"/clip/label/"+f+'.jpg'
+            
+            fname1_new=set_path+"/train/img/"+f+'.jpg'
+            fname2_new=set_path+"/train/label/"+f+'.jpg'
+            
+            os.rename(fname1, fname1_new)
+            os.rename(fname2, fname2_new) 
 
     def run(self):
         """Run method that performs all the real work"""
@@ -644,10 +696,14 @@ class zhengshiban:
         ##################################裁剪图片模块##########################################
         # 读取文件
         self.dlg.pushButton_clip_input.clicked.connect(self.clip_select_input_filename)
+        self.dlg.pushButton_clip_input_label.clicked.connect(self.clip_select_input_filename_label)
         self.dlg.pushButton_clip_output.clicked.connect(self.clip_select_output_filename)
        
         # 按钮
         self.dlg.pushButton_clip.clicked.connect(self.raster_clip)
+
+        # 按钮
+        self.dlg.pushButton_traintestsplit.clicked.connect(self.traintestsplit_clip)
 
         ############################################################################
 
