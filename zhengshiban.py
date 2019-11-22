@@ -40,8 +40,8 @@ import matplotlib.pyplot as plt
 from PyQt5.QtCore import QStringListModel 
 
 
-import skimage
-from skimage import io
+# import skimage
+# from skimage import io
 
 
 class zhengshiban:
