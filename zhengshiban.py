@@ -459,7 +459,7 @@ class zhengshiban:
         print('计算特征')
         import sys
 
-
+        #shgdhdhdfhshsshdhdh
         
         #实例化列表模型，添加数据
    
