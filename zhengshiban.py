@@ -38,6 +38,12 @@ import gdal, ogr, os, osr
 import numpy as np
 import matplotlib.pyplot as plt
 from PyQt5.QtCore import QStringListModel 
+
+
+import skimage
+from skimage import io
+
+
 class zhengshiban:
     """QGIS Plugin Implementation."""
 
@@ -498,12 +504,9 @@ class zhengshiban:
 
     def raster_clip(self):
         from PIL import Image
-        try:
-            import skimage
-        except:
-            print('pip install skimage')
-            import os
-            os.system('pip install skimage')
+        
+            
+      
         in_filename = self.dlg.lineEdit_clip_input.text()
         output_path = self.dlg.lineEdit_clip_output.text()
         clip_width = self.dlg.lineEdit_clip_width.text()
@@ -535,9 +538,30 @@ class zhengshiban:
         nullthresh=outsize*outsize*0.7
         cx=0
         cy=0
+
+        from PyQt5.QtWidgets import  QProgressBar
+        from PyQt5.QtCore import QBasicTimer
+        pbar = self.dlg.progressBar_clip
+
+        
+        bar_num = 0
+
+        c =0
         while cy+outsize<wy:
             cx=0
             while cx+outsize<wx:
+                c+=1
+                cx+=step
+            cy+=step
+
+        cx=0
+        cy=0
+        # 秦磊修改15：13
+        while cy+outsize<wy:
+            cx=0
+            while cx+outsize<wx:
+                pbar.setValue(bar_num)
+                bar_num+=(100/c)
                 img=ds.ReadAsArray(cx,cy,outsize,outsize)
                 img2=img[0:3,:,:].transpose(1,2,0)
                 if (img2[:,:,0]==0).sum()>nullthresh:
@@ -555,7 +579,9 @@ class zhengshiban:
                 print(cx,cy)
                 cx+=step
             cy+=step
+        pbar.setValue(100)
 
+        
         
 
     def run(self):
