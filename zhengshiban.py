@@ -216,9 +216,20 @@ class zhengshiban:
     def getfeature_select_output_filename(self):
         print("select_output_file")
         filename = QFileDialog.getExistingDirectory(self.dlg, "Select output file ")
-        print(filename)
+     
         self.dlg.lineEdit_getfeature_output.setText(filename)
-        # self.dlg.listView.setText(filename[0])
+
+    def clip_select_input_filename(self):
+        print("select_output_file")
+        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.txt')
+
+        self.dlg.lineEdit_clip_input.setText(filename[0])
+
+    def clip_select_output_filename(self):
+        print("select_output_file")
+        filename = QFileDialog.getExistingDirectory(self.dlg, "Select output file ")
+
+        self.dlg.lineEdit_clip_output.setText(filename)
         
     def insert_my_layer(self, layers):
         """
@@ -259,7 +270,8 @@ class zhengshiban:
         print(save_dict)
 
         if labeldict['NDVI'] == 1:
-            
+            Band1=1
+            Band2=2
             output_filename = save_dict['NDVI']
             showname = os.path.split(output_filename)[-1]
             arr=img[Band1,:,:]
@@ -421,30 +433,24 @@ class zhengshiban:
             showname = os.path.split(output_filename)[-1]
             Band1=2
             Band2=3
-            Band3=0
+            img = gdal_data.ReadAsArray()
             arr=img[Band1,:,:]
             arr1=img[Band2,:,:]
-            arr2=img[Band3,:,:]
-
             ga.numpy.seterr(all="ignore")
+            ndvi=((arr1-arr)*1.0)/((arr1+arr)*1.0)
+            NDVI=ga.numpy.nan_to_num(ndvi)
 
-            arvi=((arr1-(2*arr-arr2))*1.0) / ((arr1+2*arr-arr2)*1.0)
-
-            arvi1=ga.numpy.nan_to_num(arvi)
-img = gdal_data.ReadAsArray()
-        arr=img[Band1,:,:]
-        arr1=img[Band2,:,:]
-        
-        NDVI_new =NDVI.copy()
-        NDVI_new[NDVI_new > 0.4] = 0 
-            out=ga.SaveArray(arvi1,save_dict['Vegetation_removal'],format = "GTiff",prototype =gdal_data)
+            NDVI_new =NDVI.copy()
+            NDVI_new[NDVI_new > 0.4] = 0 
+            out=ga.SaveArray(NDVI_new,save_dict['Vegetation_removal'],format = "GTiff",prototype =gdal_data)
             out=None
             print("Vegetation_removal success")   
             iface.addRasterLayer(save_dict['Vegetation_removal'], showname)                                                                      
         
 
-    def cal_NDVI(self):
-        print('计算NDVI')
+    def cal_feature(self):
+
+        print('计算特征')
         import sys
 
 
@@ -457,7 +463,7 @@ img = gdal_data.ReadAsArray()
         slm.setStringList(qList) 
         listView.setModel(slm ) 
     
-        # from mypack.RasterDo import 
+        # 
  
         label_list = ['NDVI','DVI','RVI','GNDVI','NDWI','SAVI','MSAVI','EVI','ARVI','Vegetation_removal']
         check_list = [self.dlg.checkBox_NDVI.isChecked(),
@@ -471,13 +477,13 @@ img = gdal_data.ReadAsArray()
                     self.dlg.checkBox_ARVI.isChecked(),
                     self.dlg.checkBox_Vegetation_removal.isChecked()]
         labeldict ={}
+
+
         for i,j in zip(label_list,check_list):
             labeldict[i]=j
         
         
 
-        # in_filename = r'F:\jupyter\备份2019.11.15\县域农业\data\huapo\origin\caijian.tif'
-        # output_path=r'NDVI.tif'
         in_filename = self.dlg.lineEdit_getfeature_input.text()
         output_path = self.dlg.lineEdit_getfeature_output.text()
 
@@ -487,6 +493,70 @@ img = gdal_data.ReadAsArray()
         else:
             self.Calculation_NDVI(in_filename,output_path,labeldict)
 
+
+
+
+    def raster_clip(self):
+        from PIL import Image
+        try:
+            import skimage
+        except:
+            print('pip install skimage')
+            import os
+            os.system('pip install skimage')
+        in_filename = self.dlg.lineEdit_clip_input.text()
+        output_path = self.dlg.lineEdit_clip_output.text()
+        clip_width = self.dlg.lineEdit_clip_width.text()
+        clip_height = self.dlg.lineEdit_clip_height.text()
+        clip_step = self.dlg.lineEdit_clip_step.text()
+        name = os.path.split(in_filename)[-1]
+
+
+        imagepath = in_filename
+        ds=gdal.Open(imagepath)
+        wx=ds.RasterXSize
+        wy=ds.RasterYSize
+        
+        imagepath=in_filename
+        isnot_clip_label =False
+        if 0:
+            labelname='../data/huapo/origin/label5.tif'
+            isnot_clip_label =True
+        
+            
+
+    
+        if isnot_clip_label: dslb=gdal.Open(labelname)
+        
+        stx=0
+        sty=0
+        step=int(clip_step)
+        outsize=int(clip_width)
+        nullthresh=outsize*outsize*0.7
+        cx=0
+        cy=0
+        while cy+outsize<wy:
+            cx=0
+            while cx+outsize<wx:
+                img=ds.ReadAsArray(cx,cy,outsize,outsize)
+                img2=img[0:3,:,:].transpose(1,2,0)
+                if (img2[:,:,0]==0).sum()>nullthresh:
+                    cx+=step
+                    continue
+   
+                skimage.io.imsave(output_path+'/'+name+'_{}_{}.jpg'.format(cx,cy),img2.astype(int))
+   
+                #deal with label
+                if isnot_clip_label:
+                    img=dslb.ReadAsArray(cx,cy,outsize,outsize)
+                    img=Image.fromarray(img).convert('L')
+                    img.save(output_path+'/'+name+'_{}_{}.jpg'.format(cx,cy))
+     
+                print(cx,cy)
+                cx+=step
+            cy+=step
+
+        
 
     def run(self):
         """Run method that performs all the real work"""
@@ -501,7 +571,7 @@ img = gdal_data.ReadAsArray()
         self.dlg = zhengshibanDialog()
 
 
-        ###############################打开插件自动操作阶段#############################################
+        ###############################打开插件预处理阶段#############################################
         # 清除编辑框
         self.dlg.lineEdit.clear()
         # 绑定打开文件按钮
@@ -514,30 +584,40 @@ img = gdal_data.ReadAsArray()
         layer_list = []
         for layer in layers:
             layer_list.append(layer.name())
-            
 
+        # 把图层里的数据加到combox里
+        self.dlg.comboBox.clear()
+        self.dlg.comboBox.addItems(layer_list) 
 
+        # 把图层显示到【文件目录】
         listView = self.dlg.listView
         slm = QStringListModel()
         qList = layer_list
         slm.setStringList(qList) 
         listView.setModel(slm ) 
 
-        self.dlg.comboBox.clear()
-         
-        # 把图层里的数据加到combox里
-        self.dlg.comboBox.addItems(layer_list) 
-
 
         ##################################特征提取模块##########################################
-        # file
+        # 读取文件
         self.dlg.pushButton_getfeature_input.clicked.connect(self.getfeature_select_input_filename)
         self.dlg.pushButton_getfeature_output.clicked.connect(self.getfeature_select_output_filename)
        
-        # button
-        self.dlg.pushButton_getfeature.clicked.connect(self.cal_NDVI)
+        # 按钮
+        self.dlg.pushButton_getfeature.clicked.connect(self.cal_feature)
 
         ############################################################################
+
+        ##################################裁剪图片模块##########################################
+        # 读取文件
+        self.dlg.pushButton_clip_input.clicked.connect(self.clip_select_input_filename)
+        self.dlg.pushButton_clip_output.clicked.connect(self.clip_select_output_filename)
+       
+        # 按钮
+        self.dlg.pushButton_clip.clicked.connect(self.raster_clip)
+
+        ############################################################################
+
+
 
         # show the dialog
         self.dlg.show()
@@ -545,21 +625,6 @@ img = gdal_data.ReadAsArray()
         result = self.dlg.exec_()
         print(result)
         # See if OK was pressed
-
-
-
-
-
-
-
-
-
-
-
-
-        if result:
-           
-
-            pass
+        if result:pass
 
  
