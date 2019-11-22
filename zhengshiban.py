@@ -512,6 +512,14 @@ class zhengshiban:
         clip_width = self.dlg.lineEdit_clip_width.text()
         clip_height = self.dlg.lineEdit_clip_height.text()
         clip_step = self.dlg.lineEdit_clip_step.text()
+
+        from qgis.PyQt.QtWidgets import QMessageBox
+        if in_filename is None or in_filename == '' or output_path is None or output_path == '' :
+            QMessageBox.critical(self.iface.helpMenu(),
+                                            "错误",
+                                            "参数定义错误！")
+            return 0
+
         name = os.path.split(in_filename)[-1]
 
 

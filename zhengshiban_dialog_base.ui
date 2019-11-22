@@ -42,7 +42,7 @@
     <bool>false</bool>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -571,6 +571,19 @@ GNDVI</string>
     <attribute name="title">
      <string>外部数据</string>
     </attribute>
+    <widget class="QPushButton" name="pushButton_5">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>40</y>
+       <width>93</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>降雨数据</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QListView" name="listView">
