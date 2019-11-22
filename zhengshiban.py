@@ -202,14 +202,14 @@ class zhengshiban:
 
     def select_output_file(self):
         print("select_output_file")
-        filename = QFileDialog.getSaveFileName(self.dlg, "Select output file ","", '*.tiff,*.tif')
+        filename = QFileDialog.getSaveFileName(self.dlg, "Select output file ","", '*.tif')
         # print(filename)
         self.dlg.lineEdit.setText(filename[0])
 
 
     def getfeature_select_input_filename(self):
         print("select_output_file")
-        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.tiff,*.tif')
+        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.tif')
         # print(filename)
         self.dlg.lineEdit_getfeature_input.setText(filename[0])
 
@@ -221,7 +221,7 @@ class zhengshiban:
 
     def clip_select_input_filename(self):
         print("select_output_file")
-        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.tiff,*.tif')
+        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.tif')
 
         self.dlg.lineEdit_clip_input.setText(filename[0])
 
