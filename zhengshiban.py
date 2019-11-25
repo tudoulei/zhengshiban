@@ -616,7 +616,7 @@ class zhengshiban:
         print("File Number: ",len(file_names))
 
         from sklearn.model_selection import train_test_split
-        x_train, x_test, y_train, y_test = train_test_split(file_names, file_names, test_size=test_size, random_state=random_state)
+        x_train, x_test, y_train, y_test = train_test_split(file_names, file_names, test_size=float(test_size), random_state=int(random_state))
         print(len(x_train))
         print(len(x_test))
 

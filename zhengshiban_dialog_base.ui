@@ -498,27 +498,6 @@ GNDVI</string>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="lineEdit_clip_width">
-         <property name="text">
-          <string>512</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLineEdit" name="lineEdit_clip_height">
-         <property name="text">
-          <string>512</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="6">
-        <widget class="QLineEdit" name="lineEdit_clip_step">
-         <property name="text">
-          <string>256</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_6">
          <property name="text">
@@ -527,9 +506,9 @@ GNDVI</string>
         </widget>
        </item>
        <item row="0" column="5">
-        <widget class="QLabel" name="label_7">
+        <widget class="QLineEdit" name="lineEdit_clip_step">
          <property name="text">
-          <string>步长</string>
+          <string>256</string>
          </property>
         </widget>
        </item>
@@ -540,37 +519,25 @@ GNDVI</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="4">
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string>图片切分</string>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEdit_clip_width">
+         <property name="text">
+          <string>512</string>
          </property>
-         <widget class="QPushButton" name="pushButton_clip_3">
-          <property name="geometry">
-           <rect>
-            <x>440</x>
-            <y>80</y>
-            <width>126</width>
-            <height>28</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>开始裁剪</string>
-          </property>
-         </widget>
-         <widget class="QProgressBar" name="progressBar_clip_2">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>80</y>
-            <width>431</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>步长</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLineEdit" name="lineEdit_clip_height">
+         <property name="text">
+          <string>512</string>
+         </property>
         </widget>
        </item>
       </layout>
