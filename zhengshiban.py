@@ -291,7 +291,7 @@ class zhengshiban:
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
 
-            ndvi=((arr1-arr)*1.0)/((arr1+arr)*1.0)
+            ndvi=(arr1*1.0-arr)/(arr1+arr)
             ndvi1=ga.numpy.nan_to_num(ndvi)
             print("Calculation NDVI success")
             print("Calculation and save NDVI success")
@@ -310,7 +310,7 @@ class zhengshiban:
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
 
-            dvi=(arr1*1.0)/(arr*1.0)
+            dvi=arr1-arr
             dvi1=ga.numpy.nan_to_num(dvi)
             
             out=ga.SaveArray(dvi1,save_dict['DVI'],format = "GTiff",prototype =gdal_data)
@@ -326,7 +326,7 @@ class zhengshiban:
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
 
-            rvi=(arr1*1.0)/(arr*1.0)
+            rvi=arr1/arr
             rvi1=ga.numpy.nan_to_num(rvi)
             
             out=ga.SaveArray(rvi1,save_dict['RVI'],format = "GTiff",prototype =gdal_data)
@@ -336,13 +336,13 @@ class zhengshiban:
         if labeldict['GNDVI'] == 1: 
             output_filename = save_dict['GNDVI']
             showname = os.path.split(output_filename)[-1]
-            Band1=2
+            Band1=1
             Band2=3
             arr=img[Band1,:,:]
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
 
-            gndvi=((arr1-arr)*1.0)/((arr1+arr)*1.0)
+            gndvi=(arr1-arr)/(arr1+arr)
             gndvi1=ga.numpy.nan_to_num(gndvi)
             
             out=ga.SaveArray(gndvi1,save_dict['GNDVI'],format = "GTiff",prototype =gdal_data)
@@ -352,14 +352,13 @@ class zhengshiban:
         if labeldict['NDWI'] == 1:
             output_filename = save_dict['NDWI']
             showname = os.path.split(output_filename)[-1]
-
-            Band1=1
-            Band2=3    
+            Band1=3
+            Band2=1   
             arr=img[Band1,:,:]
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
 
-            ndwi=((arr1-arr)*1.0)/((arr1+arr)*1.0)
+            ndwi=(arr1-arr)/(arr1+arr)
             ndwi1=ga.numpy.nan_to_num(ndwi)
             
             out=ga.SaveArray(ndwi1,save_dict['NDWI'],format = "GTiff",prototype =gdal_data)
@@ -369,17 +368,14 @@ class zhengshiban:
         if labeldict['SAVI'] == 1: 
             output_filename = save_dict['SAVI']
             showname = os.path.split(output_filename)[-1]
-
             Band1=2
             Band2=3
             L=0.5
-            Band1=3
-            Band2=1 
             arr=img[Band1,:,:]
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
 
-            savi=((arr1-arr)*1.0)*((1+L)*1.0)/((arr1+arr+L)*1.0)
+            savi=(arr1-arr)*(1+L)/(arr1+arr+L)
             savi1=ga.numpy.nan_to_num(savi)
             
             out=ga.SaveArray(savi1,save_dict['SAVI'],format = "GTiff",prototype =gdal_data)
@@ -394,8 +390,7 @@ class zhengshiban:
             arr=img[Band1,:,:]
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
-
-            msavi=(2*arr1+1-np.sqrt((2*arr1+1)**2-8*(arr1-arr)))*0.5
+            msavi=(2*arr1+1-np.sqrt((2*arr1+1)**2-8*(arr1-arr)))/2
             msavi1=ga.numpy.nan_to_num(msavi)
             
             out=ga.SaveArray(msavi1,save_dict['MSAVI'],format = "GTiff",prototype =gdal_data)
@@ -413,7 +408,7 @@ class zhengshiban:
             arr2=img[Band3,:,:]
             ga.numpy.seterr(all="ignore")
 
-            evi=2.5*((arr1-arr)*1.0)/((arr1+arr*6-7.5*arr2+1)*1.0)
+            evi=2.5*(arr1-arr)/(arr1+arr*6-7.5*arr2+1)
             evi1=ga.numpy.nan_to_num(evi)
             
             out=ga.SaveArray(evi1,save_dict['EVI'],format = "GTiff",prototype =gdal_data)
@@ -432,7 +427,7 @@ class zhengshiban:
 
             ga.numpy.seterr(all="ignore")
 
-            arvi=((arr1-(2*arr-arr2))*1.0) / ((arr1+2*arr-arr2)*1.0)
+            arvi=(arr1-(2*arr-arr2))/(arr1+2*arr-arr2)
 
             arvi1=ga.numpy.nan_to_num(arvi)
 
@@ -450,7 +445,7 @@ class zhengshiban:
             arr=img[Band1,:,:]
             arr1=img[Band2,:,:]
             ga.numpy.seterr(all="ignore")
-            ndvi=((arr1-arr)*1.0)/((arr1+arr)*1.0)
+            ndvi=(arr1*1.0-arr)/(arr1+arr)
             NDVI=ga.numpy.nan_to_num(ndvi)
 
             NDVI_new =NDVI.copy()
@@ -466,7 +461,7 @@ class zhengshiban:
         print('计算特征')
         import sys
 
-
+        
         
         #实例化列表模型，添加数据
    
