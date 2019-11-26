@@ -500,9 +500,9 @@ class zhengshiban:
                     self.dlg.checkBox_EVI.isChecked(),
                     self.dlg.checkBox_ARVI.isChecked(),
                     self.dlg.checkBox_NDSI.isChecked(),
-                    self.dlg.checkBox_Vegetation_removal.isChecked()
-                    self.dlg.checkBox_PCA.isChecked()
-                    self.dlg.checkBox_shadow_removal.isChecked()
+                    self.dlg.checkBox_Vegetation_removal.isChecked(),
+                    self.dlg.checkBox_PCA.isChecked(),
+                    self.dlg.checkBox_shadow_removal.isChecked(),
                     self.dlg.checkBox_road_removal.isChecked()]
         labeldict ={}
 
