@@ -42,7 +42,7 @@
     <bool>false</bool>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -279,7 +279,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="5" column="1">
-       <widget class="QCheckBox" name="checkBox_Vegetation_removal_7">
+       <widget class="QCheckBox" name="checkBox_NDSI">
         <property name="text">
          <string>归一化积雪指数
  NDSI</string>
@@ -381,14 +381,14 @@ GNDVI</string>
        </widget>
       </item>
       <item row="6" column="0">
-       <widget class="QCheckBox" name="checkBox_Vegetation_removal_5">
+       <widget class="QCheckBox" name="checkBox_shadow_removal">
         <property name="text">
          <string>去阴影</string>
         </property>
        </widget>
       </item>
       <item row="5" column="2">
-       <widget class="QCheckBox" name="checkBox_Vegetation_removal_3">
+       <widget class="QCheckBox" name="checkBox_PCA">
         <property name="text">
          <string>第一主成分
  PCA</string>
@@ -396,7 +396,7 @@ GNDVI</string>
        </widget>
       </item>
       <item row="6" column="2">
-       <widget class="QCheckBox" name="checkBox_Vegetation_removal_13">
+       <widget class="QCheckBox" name="checkBox_road_removal">
         <property name="text">
          <string>去道路</string>
         </property>
