@@ -436,6 +436,21 @@ class zhengshiban:
             print("Calculation ARVI success")   
             iface.addRasterLayer(save_dict['ARVI'], showname)
 
+        if labeldict['NDSI'] == 1:  
+            output_filename = save_dict['NDSI']
+            showname = os.path.split(output_filename)[-1]
+            Band1=3
+            Band2=1
+            arr=img[Band1,:,:]
+            arr1=img[Band2,:,:]
+            ga.numpy.seterr(all="ignore")
+            ndsi=(arr1*1.0-arr)/(arr1+arr)
+            ndsi1=ga.numpy.nan_to_num(ndsi)
+            out=ga.SaveArray(ndsi1,save_dict['NDSI'],format = "GTiff",prototype =gdal_data)
+            out=None
+            print("Calculation NDSI success")   
+            iface.addRasterLayer(save_dict['NDSI'], showname)            
+
         if labeldict['Vegetation_removal'] == 1:  
             output_filename = save_dict['Vegetation_removal']
             showname = os.path.split(output_filename)[-1]
@@ -453,8 +468,9 @@ class zhengshiban:
             out=ga.SaveArray(NDVI_new,save_dict['Vegetation_removal'],format = "GTiff",prototype =gdal_data)
             out=None
             print("Vegetation_removal success")   
-            iface.addRasterLayer(save_dict['Vegetation_removal'], showname)                                                                      
-        
+            iface.addRasterLayer(save_dict['Vegetation_removal'], showname)   
+
+
 
     def cal_feature(self):
 
@@ -473,7 +489,7 @@ class zhengshiban:
     
         # 
  
-        label_list = ['NDVI','DVI','RVI','GNDVI','NDWI','SAVI','MSAVI','EVI','ARVI','Vegetation_removal']
+        label_list = ['NDVI','DVI','RVI','GNDVI','NDWI','SAVI','MSAVI','EVI','ARVI','NDSI','Vegetation_removal','PCA','shadow_removal','road_removal']
         check_list = [self.dlg.checkBox_NDVI.isChecked(),
                     self.dlg.checkBox_DVI.isChecked(),
                     self.dlg.checkBox_RVI.isChecked(),
@@ -483,7 +499,11 @@ class zhengshiban:
                     self.dlg.checkBox_MSAVI.isChecked(),
                     self.dlg.checkBox_EVI.isChecked(),
                     self.dlg.checkBox_ARVI.isChecked(),
-                    self.dlg.checkBox_Vegetation_removal.isChecked()]
+                    self.dlg.checkBox_NDSI.isChecked(),
+                    self.dlg.checkBox_Vegetation_removal.isChecked()
+                    self.dlg.checkBox_PCA.isChecked()
+                    self.dlg.checkBox_shadow_removal.isChecked()
+                    self.dlg.checkBox_road_removal.isChecked()]
         labeldict ={}
 
 
