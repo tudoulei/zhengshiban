@@ -470,6 +470,62 @@ class zhengshiban:
             print("Vegetation_removal success")   
             iface.addRasterLayer(save_dict['Vegetation_removal'], showname)   
 
+        if labeldict['PCA'] == 1:  
+            output_filename = save_dict['Vegetation_removal']
+            showname = os.path.split(output_filename)[-1]
+            Band1=2
+            Band2=3
+            img = gdal_data.ReadAsArray()
+            arr=img[Band1,:,:]
+            arr1=img[Band2,:,:]
+            ga.numpy.seterr(all="ignore")
+            ndvi=(arr1*1.0-arr)/(arr1+arr)
+            NDVI=ga.numpy.nan_to_num(ndvi)
+
+            NDVI_new =NDVI.copy()
+            NDVI_new[NDVI_new > 0.4] = 0 
+            out=ga.SaveArray(NDVI_new,save_dict['PCA'],format = "GTiff",prototype =gdal_data)
+            out=None
+            print("PCA success")   
+            iface.addRasterLayer(save_dict['PCA'], showname)  
+
+        if labeldict['shadow_removal'] == 1:  
+            output_filename = save_dict['shadow_removal']
+            showname = os.path.split(output_filename)[-1]
+            Band1=2
+            Band2=3
+            img = gdal_data.ReadAsArray()
+            arr=img[Band1,:,:]
+            arr1=img[Band2,:,:]
+            ga.numpy.seterr(all="ignore")
+            ndvi=(arr1*1.0-arr)/(arr1+arr)
+            NDVI=ga.numpy.nan_to_num(ndvi)
+
+            NDVI_new =NDVI.copy()
+            NDVI_new[NDVI_new > 0.4] = 0 
+            out=ga.SaveArray(NDVI_new,save_dict['shadow_removal'],format = "GTiff",prototype =gdal_data)
+            out=None
+            print("shadow_removal success")   
+            iface.addRasterLayer(save_dict['shadow_removal'], showname)  
+
+        if labeldict['road_removal'] == 1:  
+            output_filename = save_dict['road_removal']
+            showname = os.path.split(output_filename)[-1]
+            Band1=2
+            Band2=3
+            img = gdal_data.ReadAsArray()
+            arr=img[Band1,:,:]
+            arr1=img[Band2,:,:]
+            ga.numpy.seterr(all="ignore")
+            ndvi=(arr1*1.0-arr)/(arr1+arr)
+            NDVI=ga.numpy.nan_to_num(ndvi)
+
+            NDVI_new =NDVI.copy()
+            NDVI_new[NDVI_new > 0.4] = 0 
+            out=ga.SaveArray(NDVI_new,save_dict['road_removal'],format = "GTiff",prototype =gdal_data)
+            out=None
+            print("road_removal success")   
+            iface.addRasterLayer(save_dict['road_removal'], showname)              
 
 
     def cal_feature(self):
