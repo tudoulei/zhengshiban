@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1042</width>
+    <width>1029</width>
     <height>767</height>
    </rect>
   </property>
@@ -42,7 +42,7 @@
     <bool>false</bool>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -274,31 +274,29 @@
        <x>40</x>
        <y>130</y>
        <width>641</width>
-       <height>201</height>
+       <height>271</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="5" column="1">
-       <widget class="QCheckBox" name="checkBox_Vegetation_removal_7">
+       <widget class="QCheckBox" name="checkBox_PCA">
         <property name="text">
-         <string>归一化积雪指数
- NDSI</string>
+         <string>第一主成分
+ PCA</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="checkBox_DVI">
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="checkBox_shadow_removal">
         <property name="text">
-         <string>差值植被指数 
-DVI</string>
+         <string>去阴影</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QCheckBox" name="checkBox_Vegetation_removal_2">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>土壤亮度指数
- NDSI</string>
+         <string>选择需要提取的特征</string>
         </property>
        </widget>
       </item>
@@ -307,14 +305,6 @@ DVI</string>
         <property name="text">
          <string>绿通道植被指数 
 GNDVI</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QCheckBox" name="checkBox_RVI">
-        <property name="text">
-         <string>比值植被指数
- RVI</string>
         </property>
        </widget>
       </item>
@@ -342,14 +332,6 @@ GNDVI</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QCheckBox" name="checkBox_ARVI">
-        <property name="text">
-         <string>大气阻抗植被指数
- ARVI</string>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="0">
        <widget class="QCheckBox" name="checkBox_EVI">
         <property name="text">
@@ -366,39 +348,77 @@ GNDVI</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_4">
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="checkBox_RVI">
         <property name="text">
-         <string>选择需要提取的特征</string>
+         <string>比值植被指数
+ RVI</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="checkBox_DVI">
+        <property name="text">
+         <string>差值植被指数 
+DVI</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="checkBox_ARVI">
+        <property name="text">
+         <string>大气阻抗植被指数
+ ARVI</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="checkBox_NDSI">
+        <property name="text">
+         <string>归一化积雪指数
+ NDSI</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2">
+       <widget class="QLineEdit" name="lineEdit_Vegetation_removal_threshold">
+        <property name="text">
+         <string>0.2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLabel" name="label_20">
+        <property name="text">
+         <string>去植被阈值</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
        <widget class="QCheckBox" name="checkBox_Vegetation_removal">
         <property name="text">
          <string>去植被</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="QCheckBox" name="checkBox_Vegetation_removal_5">
-        <property name="text">
-         <string>去阴影</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2">
-       <widget class="QCheckBox" name="checkBox_Vegetation_removal_3">
-        <property name="text">
-         <string>第一主成分
- PCA</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="2">
-       <widget class="QCheckBox" name="checkBox_Vegetation_removal_13">
+      <item row="9" column="0">
+       <widget class="QCheckBox" name="checkBox_road_removal">
         <property name="text">
          <string>去道路</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QLabel" name="label_29">
+        <property name="text">
+         <string>去道路阈值</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="2">
+       <widget class="QLineEdit" name="lineEdit_road_removal_threshold">
+        <property name="text">
+         <string>0.2</string>
         </property>
        </widget>
       </item>
@@ -992,7 +1012,7 @@ GNDVI</string>
         <x>10</x>
         <y>20</y>
         <width>631</width>
-        <height>221</height>
+        <height>241</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_15">
@@ -1267,7 +1287,7 @@ GNDVI</string>
     <widget class="QGroupBox" name="groupBox">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>10</x>
        <y>150</y>
        <width>591</width>
        <height>121</height>
@@ -1281,7 +1301,7 @@ GNDVI</string>
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>551</width>
+        <width>571</width>
         <height>41</height>
        </rect>
       </property>
@@ -1360,7 +1380,7 @@ GNDVI</string>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>10</x>
        <y>280</y>
        <width>591</width>
        <height>131</height>
@@ -1464,6 +1484,59 @@ GNDVI</string>
      <property name="default">
       <bool>false</bool>
      </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="geometry">
+      <rect>
+       <x>620</x>
+       <y>160</y>
+       <width>381</width>
+       <height>251</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>数据增强</string>
+     </property>
+     <widget class="QWidget" name="gridLayoutWidget_6">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>351</width>
+        <height>201</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="checkBox_6">
+         <property name="text">
+          <string>随机裁剪</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="checkBox_7">
+         <property name="text">
+          <string>随机亮度改变</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="checkBox_8">
+         <property name="text">
+          <string>随机。。</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QCheckBox" name="checkBox_9">
+         <property name="text">
+          <string>随机。。</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_8">

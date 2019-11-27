@@ -24,7 +24,7 @@
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction,QFileDialog
-
+from qgis.PyQt.QtWidgets import QMessageBox
 # Initialize Qt resources from file resources.py
 from .resources import *
 # Import the code for the dialog
@@ -39,9 +39,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyQt5.QtCore import QStringListModel 
 
-
-# import skimage
-# from skimage import io
+try:
+    import skimage
+    from skimage import io
+except:
+    print('不存在skimage库，请安装')
 
 
 class zhengshiban:
@@ -267,7 +269,7 @@ class zhengshiban:
 
 
 
-    def Calculation_NDVI(self,in_filename,output_path,labeldict,Band1=1,Band2=2,save=True):
+    def Calculation_feature_function(self,in_filename,output_path,labeldict,Band1=1,Band2=2,save=True):
 
         # 文件名
         name = os.path.split(in_filename)[-1]
@@ -464,20 +466,37 @@ class zhengshiban:
             NDVI=ga.numpy.nan_to_num(ndvi)
 
             NDVI_new =NDVI.copy()
-            NDVI_new[NDVI_new > 0.4] = 0 
-            out=ga.SaveArray(NDVI_new,save_dict['Vegetation_removal'],format = "GTiff",prototype =gdal_data)
+            ################去植被阈值###################
+            lineEdit_Vegetation_removal_threshold = self.dlg.lineEdit_Vegetation_removal_threshold.text()
+            if lineEdit_Vegetation_removal_threshold is None:
+                lineEdit_Vegetation_removal_threshold = 0.4
+            else:
+                lineEdit_Vegetation_removal_threshold=float(lineEdit_Vegetation_removal_threshold)
+
+            # NDVI_new[NDVI_new > lineEdit_Vegetation_removal_threshold] = 0
+
+            new_img = img.copy()
+            for i in range(img.shape[0]):
+                new_img[i,NDVI_new > lineEdit_Vegetation_removal_threshold] = 0
+
+            out=ga.SaveArray(new_img,save_dict['Vegetation_removal'],format = "GTiff",prototype =gdal_data)
             out=None
             print("Vegetation_removal success")   
             iface.addRasterLayer(save_dict['Vegetation_removal'], showname)   
 
         if labeldict['PCA'] == 1:  
+            # todo :PCA有问题
             output_filename = save_dict['PCA']
             showname = os.path.split(output_filename)[-1]
             img = gdal_data.ReadAsArray()
-            pca=sklearn.decomposition.PCA(n_components=1)
-            pca.fit(img)
-            newX=pca.transform(img)
-            out=ga.SaveArray(newX,save_dict['PCA'],format = "GTiff",prototype =gdal_data)
+            
+            from sklearn.decomposition  import PCA
+            pca=PCA(n_components=1)
+
+            a,b,c  = img.shape
+            pca_img = pca.fit_transform(img.T.reshape(-1,a)).reshape(b,c)
+
+            out=ga.SaveArray(pca_img,save_dict['PCA'],format = "GTiff",prototype =gdal_data)
             out=None
             print("PCA success")   
             iface.addRasterLayer(save_dict['PCA'], showname)  
@@ -495,7 +514,10 @@ class zhengshiban:
             NDVI=ga.numpy.nan_to_num(ndvi)
 
             NDVI_new =NDVI.copy()
-            NDVI_new[NDVI_new > 0.4] = 0 
+
+            
+
+             
             out=ga.SaveArray(NDVI_new,save_dict['shadow_removal'],format = "GTiff",prototype =gdal_data)
             out=None
             print("shadow_removal success")   
@@ -514,8 +536,21 @@ class zhengshiban:
             NDVI=ga.numpy.nan_to_num(ndvi)
 
             NDVI_new =NDVI.copy()
-            NDVI_new[NDVI_new > 0.4] = 0 
-            out=ga.SaveArray(NDVI_new,save_dict['road_removal'],format = "GTiff",prototype =gdal_data)
+            ################去植被阈值###################
+            lineEdit_road_removal_threshold = self.dlg.lineEdit_road_removal_threshold.text()
+            if lineEdit_road_removal_threshold is None:
+                lineEdit_road_removal_threshold = 0.4
+            else:
+                lineEdit_road_removal_threshold=float(lineEdit_road_removal_threshold)
+
+            # NDVI_new[NDVI_new > lineEdit_Vegetation_removal_threshold] = 0
+
+            new_img = img.copy()
+            for i in range(img.shape[0]):
+                new_img[i,NDVI_new < lineEdit_road_removal_threshold] = 0
+
+
+            out=ga.SaveArray(new_img,save_dict['road_removal'],format = "GTiff",prototype =gdal_data)
             out=None
             print("road_removal success")   
             iface.addRasterLayer(save_dict['road_removal'], showname)              
@@ -538,7 +573,8 @@ class zhengshiban:
     
         # 
  
-        label_list = ['NDVI','DVI','RVI','GNDVI','NDWI','SAVI','MSAVI','EVI','ARVI','NDSI','Vegetation_removal','PCA','shadow_removal','road_removal']
+        label_list = ['NDVI','DVI','RVI','GNDVI','NDWI','SAVI','MSAVI','EVI','ARVI',
+        'NDSI','Vegetation_removal','PCA','shadow_removal','road_removal']
         check_list = [self.dlg.checkBox_NDVI.isChecked(),
                     self.dlg.checkBox_DVI.isChecked(),
                     self.dlg.checkBox_RVI.isChecked(),
@@ -555,7 +591,7 @@ class zhengshiban:
                     self.dlg.checkBox_road_removal.isChecked()]
         labeldict ={}
 
-
+        
         for i,j in zip(label_list,check_list):
             labeldict[i]=j
         
@@ -567,8 +603,16 @@ class zhengshiban:
         # todo:加警告框
         if (output_path is None) or (in_filename is None):
             print('请选择路径')
+            QMessageBox.critical(self.iface.helpMenu(),
+                                            "错误",
+                                            "未输入文件路径！")
+        elif ~all(check_list):
+            QMessageBox.critical(self.iface.helpMenu(),
+                                            "错误",
+                                            "未勾选特征提取方法！")
+
         else:
-            self.Calculation_NDVI(in_filename,output_path,labeldict)
+            self.Calculation_feature_function(in_filename,output_path,labeldict)
 
 
 
@@ -588,7 +632,7 @@ class zhengshiban:
         os.makedirs(output_path+"/clip/img/",exist_ok=1)
         os.makedirs(output_path+"/clip/label/",exist_ok=1)
 
-        from qgis.PyQt.QtWidgets import QMessageBox
+        
         if in_filename is None or in_filename == '' or output_path is None or output_path == '' :
             QMessageBox.critical(self.iface.helpMenu(),
                                             "错误",
