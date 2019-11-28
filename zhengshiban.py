@@ -38,13 +38,87 @@ import gdal, ogr, os, osr
 import numpy as np
 import matplotlib.pyplot as plt
 from PyQt5.QtCore import QStringListModel 
-from .my_class import *
+
 try:
     import skimage
     from skimage import io
+    from .my_class import *
 except:
     print('不存在skimage库，请安装')
 
+global GA_ReadOnly
+global dx
+GA_ReadOnly = 0
+dx =30
+
+
+import gdal
+import os
+import sys
+import osr
+import math
+import numpy as np
+from gdalconst import *
+
+# 给栅格最外圈加一圈
+def assignBCs(elevGrid):
+    ny, nx = elevGrid.shape
+    Zbc = np.zeros((ny + 2, nx + 2))
+    Zbc[1:-1, 1:-1] = elevGrid
+
+    Zbc[0, 1:-1] = elevGrid[0, :]
+    Zbc[-1, 1:-1] = elevGrid[-1, :]
+    Zbc[1:-1, 0] = elevGrid[:, 0]
+    Zbc[1:-1, -1] = elevGrid[:, -1]
+
+    Zbc[0, 0] = elevGrid[0, 0]
+    Zbc[0, -1] = elevGrid[0, -1]
+    Zbc[-1, 0] = elevGrid[-1, 0]
+    Zbc[-1, -1] = elevGrid[-1, 0]
+
+    return Zbc
+
+
+# 计算dx,dy
+def calcFiniteSlopes(elevGrid, dx):
+    Zbc = assignBCs(elevGrid)
+
+    Sx = (Zbc[1:-1, :-2] - Zbc[1:-1, 2:]) / (2 * dx)  # WE方向
+    Sy = (Zbc[2:, 1:-1] - Zbc[:-2, 1:-1]) / (2 * dx)  # NS方向
+
+    return Sx, Sy
+
+
+# 投影转换
+def convertProjection(data, filename):
+    landsatData = gdal.Open(filename, GA_ReadOnly)
+
+    oldRef = osr.SpatialReference()
+    oldRef.ImportFromWkt(data.GetProjectionRef())
+
+    newRef = osr.SpatialReference()
+    newRef.ImportFromWkt(landsatData.GetProjectionRef())
+
+    transform = osr.CoordinateTransformation(oldRef, newRef)
+
+    tVect = data.GetGeoTransform()
+    nx, ny = data.RasterXSize, data.RasterYSize
+    (ulx, uly, ulz) = transform.TransformPoint(tVect[0], tVect[3])
+    (lrx, lry, lrz) = transform.TransformPoint(tVect[0] + tVect[1] * nx, tVect[3] + tVect[5] * ny)
+
+    memDrv = gdal.GetDriverByName('MEM')
+
+    dataOut = memDrv.Create('name', int((lrx - ulx) / dx), int((uly - lry) / dx), 1, gdal.GDT_Float32)
+
+    newtVect = (ulx, dx, tVect[2], uly, tVect[4], -dx)
+
+    dataOut.SetGeoTransform(newtVect)
+    dataOut.SetProjection(newRef.ExportToWkt())
+
+    # Perform the projection/resampling
+    res = gdal.ReprojectImage(data, dataOut, oldRef.ExportToWkt(), newRef.ExportToWkt(), gdal.GRA_Cubic)
+
+    return dataOut
 
 class zhengshiban:
     """QGIS Plugin Implementation."""
@@ -243,7 +317,18 @@ class zhengshiban:
         self.dlg.lineEdit_clip_input.setText(filename[0])
 
 
+    def clip_select_output_filename(self):
+        print("select_output_file")
+        filename = QFileDialog.getExistingDirectory(self.dlg, "Select output file ")
+     
+        self.dlg.lineEdit_clip_output.setText(filename)
 
+
+    def dem_select_input_filename(self):
+        print("select_output_file")
+        filename = QFileDialog.getExistingDirectory(self.dlg, "Select output file ")
+     
+        self.dlg.lineEdit_dem_input.setText(filename)
 
     def dem_select_output_filename(self):
         print("select_output_file")
@@ -767,6 +852,7 @@ class zhengshiban:
 
 
     def get_slope_from_dem(self):
+        GA_ReadOnly = 0
         
         output_path = self.dlg.lineEdit_dem_output.text()
 
@@ -785,10 +871,12 @@ class zhengshiban:
         dx = 30  # 分辨率
     
         # 投影变换
-        projData = convertProjection(data, LandsatFilename)
+        # projData = convertProjection(data, LandsatFilename)
+        # gridNew = projData.ReadAsArray().astype(np.float)
+
+        gridNew = data.ReadAsArray().astype(np.float)
     
-        gridNew = projData.ReadAsArray().astype(np.float)
-    
+        dx  = self.dlg.spinBox_dem_slope_resolution.value()
         Sx, Sy = calcFiniteSlopes(gridNew, dx)
         # 坡度计算
         slope = np.arctan(np.sqrt(Sx ** 2 + Sy ** 2)) * 57.29578
@@ -827,18 +915,31 @@ class zhengshiban:
         if os.path.exists(aspectFilename):
             os.remove(aspectFilename)
     
-        ds1 = driver.Create(slopeFilename, slope.shape[1], slope.shape[0], 1, GDT_Float32)
-        band = ds1.GetRasterBand(1)
-        band.WriteArray(slope, 0, 0)
+        ##########way1########
+        # ds1 = driver.Create(slopeFilename, slope.shape[1], slope.shape[0], 1, GDT_Float32)
+        # band = ds1.GetRasterBand(1)
+        # band.WriteArray(slope, 0, 0)
     
-        ds2 = driver.Create(aspectFilename, aspect.shape[1], aspect.shape[0], 1, GDT_Float32)
-        band = ds2.GetRasterBand(1)
-        band.WriteArray(aspect, 0, 0)
+        # ds2 = driver.Create(aspectFilename, aspect.shape[1], aspect.shape[0], 1, GDT_Float32)
+        # band = ds2.GetRasterBand(1)
+        # band.WriteArray(aspect, 0, 0)
+        # del ds1
+        # del ds2
+        ##########way2########
+
+        out=ga.SaveArray(slope,slopeFilename,format = "GTiff",prototype =data)
+        out=None
+        out=ga.SaveArray(aspect,aspectFilename,format = "GTiff",prototype =data)
+        out=None
+            
     
-        del ds1
-        del ds2
+        
         data = None
         projData = None
+
+        if self.dlg.checkBox_dem_slope_show.isChecked():
+            iface.addRasterLayer(slopeFilename,'slope')   
+            iface.addRasterLayer(aspectFilename,'aspect')
 
 
 
@@ -908,7 +1009,7 @@ class zhengshiban:
         self.dlg.pushButton_dem_output.clicked.connect(self.dem_select_output_filename)
        
         # 按钮
-        self.dlg.pushButton_dem.clicked.connect(self.get_slope_from_dem)
+        self.dlg.pushButton_slope.clicked.connect(self.get_slope_from_dem)
 
         # # 按钮
         # self.dlg.pushButton_traintestsplit.clicked.connect(self.traintestsplit_dem)

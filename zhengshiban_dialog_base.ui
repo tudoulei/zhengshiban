@@ -651,33 +651,46 @@ DVI</string>
       </property>
       <layout class="QFormLayout" name="formLayout_2">
        <item row="0" column="0">
-        <widget class="QCheckBox" name="checkBox_13">
+        <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>CheckBox</string>
+          <string>分辨率/m</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QCheckBox" name="checkBox_12">
+        <widget class="QSpinBox" name="spinBox_dem_slope_resolution">
+         <property name="minimum">
+          <number>10</number>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>30</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBox_dem_slope_show">
          <property name="text">
-          <string>CheckBox</string>
+          <string>是否显示到窗口</string>
          </property>
         </widget>
        </item>
        <item row="2" column="0" colspan="2">
-        <widget class="QPushButton" name="pushButton_aspect">
+        <widget class="QPushButton" name="pushButton_slope">
          <property name="text">
-          <string>Aspect坡向提取</string>
+          <string>Slope坡度提取</string>
          </property>
          <property name="default">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QPushButton" name="pushButton_slope">
+       <item row="3" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_aspect">
          <property name="text">
-          <string>Slope坡度提取</string>
+          <string>Aspect坡向提取</string>
          </property>
          <property name="default">
           <bool>false</bool>
