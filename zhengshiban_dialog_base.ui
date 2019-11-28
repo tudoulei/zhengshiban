@@ -28,142 +28,6 @@
    <property name="currentIndex">
     <number>2</number>
    </property>
-   <widget class="QWidget" name="tab">
-    <attribute name="title">
-     <string>高光谱数据</string>
-    </attribute>
-    <widget class="QComboBox" name="comboBox">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>40</y>
-       <width>841</width>
-       <height>31</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>120</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>移除所有的图层</string>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QListWidget" name="listWidget">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>120</y>
-       <width>841</width>
-       <height>181</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QWidget" name="horizontalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>310</y>
-       <width>841</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QCheckBox" name="checkBox_2">
-        <property name="text">
-         <string>参数1</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkBox">
-        <property name="text">
-         <string>参数2</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkBox_3">
-        <property name="text">
-         <string>参数3</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkBox_4">
-        <property name="text">
-         <string>参数4</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>320</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>启动处理</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_3">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>80</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>载入文件</string>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_4">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>40</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>载入图层文件</string>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>80</y>
-       <width>841</width>
-       <height>31</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
    <widget class="QWidget" name="tab_5">
     <attribute name="title">
      <string>特征提取</string>
@@ -461,7 +325,7 @@ DVI</string>
     <widget class="QLineEdit" name="lineEdit_dem_input">
      <property name="geometry">
       <rect>
-       <x>100</x>
+       <x>120</x>
        <y>20</y>
        <width>581</width>
        <height>31</height>
@@ -487,7 +351,7 @@ DVI</string>
     <widget class="QLineEdit" name="lineEdit_dem_output">
      <property name="geometry">
       <rect>
-       <x>100</x>
+       <x>120</x>
        <y>60</y>
        <width>581</width>
        <height>31</height>
@@ -500,7 +364,7 @@ DVI</string>
     <widget class="QPushButton" name="pushButton_dem_input">
      <property name="geometry">
       <rect>
-       <x>690</x>
+       <x>710</x>
        <y>20</y>
        <width>121</width>
        <height>31</height>
@@ -516,7 +380,7 @@ DVI</string>
     <widget class="QPushButton" name="pushButton_dem_output">
      <property name="geometry">
       <rect>
-       <x>690</x>
+       <x>710</x>
        <y>60</y>
        <width>121</width>
        <height>31</height>
@@ -552,7 +416,7 @@ DVI</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="0" column="1">
-        <widget class="QPushButton" name="pushButton_getfeature_input_5">
+        <widget class="QPushButton" name="pushButton_denoising">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>2</horstretch>
@@ -680,17 +544,7 @@ DVI</string>
        <item row="2" column="0" colspan="2">
         <widget class="QPushButton" name="pushButton_slope">
          <property name="text">
-          <string>Slope坡度提取</string>
-         </property>
-         <property name="default">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QPushButton" name="pushButton_aspect">
-         <property name="text">
-          <string>Aspect坡向提取</string>
+          <string>Slope坡度+Aspect坡向提取</string>
          </property>
          <property name="default">
           <bool>false</bool>
@@ -699,158 +553,6 @@ DVI</string>
        </item>
       </layout>
      </widget>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tab_3">
-    <attribute name="title">
-     <string>无人机数据</string>
-    </attribute>
-    <widget class="QWidget" name="gridLayoutWidget_5">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>140</y>
-       <width>531</width>
-       <height>141</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_6">
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit_getfeature_input_4">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_getfeature_input_5">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="pushButton_getfeature_input_10">
-        <property name="text">
-         <string>        计算裂缝长度      </string>
-        </property>
-        <property name="default">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="pushButton_getfeature_input_12">
-        <property name="text">
-         <string>计算裂缝宽度</string>
-        </property>
-        <property name="default">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="pushButton_getfeature_input_11">
-        <property name="text">
-         <string>计算结构面距离</string>
-        </property>
-        <property name="default">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit_getfeature_input_7">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QLabel" name="label_21">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>20</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>选择文件路径</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_22">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>60</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>选择保存路径</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_getfeature_input_6">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>19</y>
-       <width>451</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_getfeature_input_8">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>60</y>
-       <width>451</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_getfeature_input_13">
-     <property name="geometry">
-      <rect>
-       <x>640</x>
-       <y>20</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>载入文件</string>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_getfeature_input_14">
-     <property name="geometry">
-      <rect>
-       <x>640</x>
-       <y>60</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>载入文件</string>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_7">
@@ -862,7 +564,7 @@ DVI</string>
       <rect>
        <x>20</x>
        <y>330</y>
-       <width>631</width>
+       <width>931</width>
        <height>151</height>
       </rect>
      </property>
@@ -872,8 +574,8 @@ DVI</string>
      <widget class="QPushButton" name="pushButton_getfeature_3">
       <property name="geometry">
        <rect>
-        <x>470</x>
-        <y>50</y>
+        <x>790</x>
+        <y>100</y>
         <width>111</width>
         <height>31</height>
        </rect>
@@ -886,7 +588,7 @@ DVI</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>20</y>
+        <y>40</y>
         <width>231</width>
         <height>30</height>
        </rect>
@@ -899,7 +601,7 @@ DVI</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>60</y>
+        <y>80</y>
         <width>171</width>
         <height>30</height>
        </rect>
@@ -912,201 +614,49 @@ DVI</string>
     <widget class="QGroupBox" name="groupBox_19">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>651</width>
-       <height>301</height>
+       <x>20</x>
+       <y>20</y>
+       <width>941</width>
+       <height>291</height>
       </rect>
      </property>
      <property name="title">
-      <string>特征融合</string>
+      <string>特征融合：选择至少三个特征进行融合</string>
      </property>
-     <widget class="QWidget" name="gridLayoutWidget_15">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>631</width>
-        <height>241</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_15">
-       <item row="6" column="0">
-        <widget class="QCheckBox" name="checkBox_Vegetation_removal_17">
-         <property name="text">
-          <string>去阴影</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="2">
-        <widget class="QCheckBox" name="checkBox_Vegetation_removal_19">
-         <property name="text">
-          <string>去道路</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QCheckBox" name="checkBox_Vegetation_removal_18">
-         <property name="text">
-          <string>第一主成分
- PCA</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_50">
-         <property name="text">
-          <string>选择需要融合的特征</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QCheckBox" name="checkBox_Vegetation_removal_16">
-         <property name="text">
-          <string>去植被</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QCheckBox" name="checkBox_Vegetation_removal_15">
-         <property name="text">
-          <string>土壤亮度指数
- NDSI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QCheckBox" name="checkBox_DVI_3">
-         <property name="text">
-          <string>差值植被指数 
-DVI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QCheckBox" name="checkBox_Vegetation_removal_14">
-         <property name="text">
-          <string>归一化积雪指数
- NDSI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QCheckBox" name="checkBox_MSAVI_3">
-         <property name="text">
-          <string>优化土壤调节植被指数
- MSAVI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QCheckBox" name="checkBox_NDWI_3">
-         <property name="text">
-          <string>归一化水体指数
- NDWI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QCheckBox" name="checkBox_GNDVI_3">
-         <property name="text">
-          <string>绿通道植被指数 
-GNDVI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QCheckBox" name="checkBox_RVI_3">
-         <property name="text">
-          <string>比值植被指数
- RVI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QCheckBox" name="checkBox_NDVI_5">
-         <property name="text">
-          <string>归一化植被指数
- NDVI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QCheckBox" name="checkBox_SAVI_3">
-         <property name="text">
-          <string>土壤调节植被指数
- SAVI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QCheckBox" name="checkBox_ARVI_3">
-         <property name="text">
-          <string>大气阻抗植被指数
- ARVI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QCheckBox" name="checkBox_EVI_3">
-         <property name="text">
-          <string>增强植被指数
- EVI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QCheckBox" name="checkBox_Vegetation_removal_26">
-         <property name="text">
-          <string>坡度</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QCheckBox" name="checkBox_Vegetation_removal_27">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>4</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>坡向</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QPushButton" name="pushButton_getfeature_7">
       <property name="geometry">
        <rect>
-        <x>480</x>
-        <y>270</y>
+        <x>800</x>
+        <y>250</y>
         <width>111</width>
         <height>23</height>
        </rect>
       </property>
       <property name="text">
-       <string>开始提取</string>
+       <string>开始融合                                                                                                                                 0.。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。酷酷酷2</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkBox_11">
       <property name="geometry">
        <rect>
-        <x>220</x>
-        <y>270</y>
+        <x>580</x>
+        <y>250</y>
         <width>191</width>
         <height>19</height>
        </rect>
       </property>
       <property name="text">
        <string>显示结果文件到窗口</string>
+      </property>
+     </widget>
+     <widget class="QListView" name="listView_image_fusion">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>30</y>
+        <width>871</width>
+        <height>181</height>
+       </rect>
       </property>
      </widget>
     </widget>
@@ -1673,6 +1223,294 @@ GNDVI</string>
      </property>
      <property name="text">
       <string>选择模型路径</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>无人机数据</string>
+    </attribute>
+    <widget class="QWidget" name="gridLayoutWidget_5">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>140</y>
+       <width>531</width>
+       <height>141</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEdit_getfeature_input_4">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEdit_getfeature_input_5">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="pushButton_getfeature_input_10">
+        <property name="text">
+         <string>        计算裂缝长度      </string>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="pushButton_getfeature_input_12">
+        <property name="text">
+         <string>计算裂缝宽度</string>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="pushButton_getfeature_input_11">
+        <property name="text">
+         <string>计算结构面距离</string>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="lineEdit_getfeature_input_7">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QLabel" name="label_21">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>选择文件路径</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_22">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>60</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>选择保存路径</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_getfeature_input_6">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>19</y>
+       <width>451</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_getfeature_input_8">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>60</y>
+       <width>451</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_getfeature_input_13">
+     <property name="geometry">
+      <rect>
+       <x>640</x>
+       <y>20</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>载入文件</string>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_getfeature_input_14">
+     <property name="geometry">
+      <rect>
+       <x>640</x>
+       <y>60</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>载入文件</string>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>高光谱数据</string>
+    </attribute>
+    <widget class="QComboBox" name="comboBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>40</y>
+       <width>841</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>870</x>
+       <y>120</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>移除所有的图层</string>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="listWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>120</y>
+       <width>841</width>
+       <height>181</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>310</y>
+       <width>841</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>参数1</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="text">
+         <string>参数2</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_3">
+        <property name="text">
+         <string>参数3</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_4">
+        <property name="text">
+         <string>参数4</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>870</x>
+       <y>320</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>启动处理</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>870</x>
+       <y>80</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>载入文件</string>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>870</x>
+       <y>40</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>载入图层文件</string>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>841</width>
+       <height>31</height>
+      </rect>
      </property>
     </widget>
    </widget>

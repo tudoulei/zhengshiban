@@ -157,6 +157,10 @@ class zhengshiban:
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
 
+        # 我加的
+        self.qList =[]
+        self.image_fusion_list = []
+
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
@@ -693,18 +697,14 @@ class zhengshiban:
         in_filename = self.dlg.lineEdit_getfeature_input.text()
         output_path = self.dlg.lineEdit_getfeature_output.text()
 
-        # todo:加警告框
+        
         # print(all(check_list),check_list)
-        if (output_path is None) or (in_filename is None):
+        if (output_path is None) or (in_filename is None) or (output_path =='') or (in_filename ==''):
             print('请选择路径')
-            QMessageBox.critical(self.iface.helpMenu(),
-                                            "错误",
-                                            "未输入文件路径！")
-        # todo :debug
-        # elif ~any(check_list):
-        #     QMessageBox.critical(self.iface.helpMenu(),
-        #                                     "错误",
-        #                                     "未勾选特征提取方法！")
+            QMessageBox.critical(self.dlg,"错误","未输入文件路径！")
+        # 一个特征提取都不选就报错
+        elif ~any(check_list):
+            QMessageBox.critical(self.dlg, "错误","未勾选特征提取方法！")
 
         else:
             self.Calculation_feature_function(in_filename,output_path,labeldict)
@@ -729,7 +729,7 @@ class zhengshiban:
 
         
         if in_filename is None or in_filename == '' or output_path is None or output_path == '' :
-            QMessageBox.critical(self.iface.helpMenu(),
+            QMessageBox.critical(self.dlg,
                                             "错误",
                                             "参数定义错误！")
             return 0
@@ -857,6 +857,14 @@ class zhengshiban:
         output_path = self.dlg.lineEdit_dem_output.text()
 
         DEMFilename = self.dlg.lineEdit_dem_input.text()
+
+        if (output_path is None) or (DEMFilename is None) or (output_path =='') or (DEMFilename ==''):
+            print('请选择路径')
+            QMessageBox.critical(self.dlg,
+                                    "错误",
+                                    "未输入文件路径！")
+            return 0
+
         LandsatFilename =  'D:/data/caijian.tif'
         slopeFilename = output_path+'/slope_prj.tif'
         aspectFilename = output_path+'aspect_prj.tif'
@@ -868,7 +876,7 @@ class zhengshiban:
             print('Cannot open this file:' + DEMFilename)
             sys.exit(1)
     
-        dx = 30  # 分辨率
+        
     
         # 投影变换
         # projData = convertProjection(data, LandsatFilename)
@@ -876,7 +884,9 @@ class zhengshiban:
 
         gridNew = data.ReadAsArray().astype(np.float)
     
+        # 获取分辨率
         dx  = self.dlg.spinBox_dem_slope_resolution.value()
+
         Sx, Sy = calcFiniteSlopes(gridNew, dx)
         # 坡度计算
         slope = np.arctan(np.sqrt(Sx ** 2 + Sy ** 2)) * 57.29578
@@ -941,7 +951,18 @@ class zhengshiban:
             iface.addRasterLayer(slopeFilename,'slope')   
             iface.addRasterLayer(aspectFilename,'aspect')
 
+    def QList_clicked(self,qModelIndex):
 
+            self.image_fusion_list.append(self.qList[qModelIndex.row()])
+
+            # 把图层显示到【文件目录】
+            listView = self.dlg.listView_image_fusion
+            slm = QStringListModel()
+            slm.setStringList(self.image_fusion_list) 
+            listView.setModel(slm ) 
+
+            #提示信息弹窗，你选择的信息
+            QMessageBox.information(self.dlg,'ListWidget','你选择了：' + self.qList[qModelIndex.row()])
 
     def run(self):
         """Run method that performs all the real work"""
@@ -977,9 +998,10 @@ class zhengshiban:
         # 把图层显示到【文件目录】
         listView = self.dlg.listView
         slm = QStringListModel()
-        qList = layer_list
-        slm.setStringList(qList) 
+        self.qList = layer_list
+        slm.setStringList(self.qList) 
         listView.setModel(slm ) 
+        listView.clicked.connect(self.QList_clicked)
 
 
         ##################################特征提取模块##########################################
