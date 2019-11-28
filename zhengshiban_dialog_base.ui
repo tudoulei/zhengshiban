@@ -26,7 +26,7 @@
     <bool>false</bool>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -458,7 +458,7 @@ DVI</string>
       <string>选择文件路径</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_getfeature_input_3">
+    <widget class="QLineEdit" name="lineEdit_dem_input">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -468,7 +468,7 @@ DVI</string>
       </rect>
      </property>
      <property name="text">
-      <string>D:\data\caijian.tif</string>
+      <string>D:\data\裁剪dem.tif</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_17">
@@ -484,7 +484,7 @@ DVI</string>
       <string>选择保存路径</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_getfeature_output_3">
+    <widget class="QLineEdit" name="lineEdit_dem_output">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -497,7 +497,7 @@ DVI</string>
       <string>D:\data\test</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_getfeature_input_3">
+    <widget class="QPushButton" name="pushButton_dem_input">
      <property name="geometry">
       <rect>
        <x>690</x>
@@ -513,7 +513,7 @@ DVI</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_getfeature_output_3">
+    <widget class="QPushButton" name="pushButton_dem_output">
      <property name="geometry">
       <rect>
        <x>690</x>
@@ -640,30 +640,44 @@ DVI</string>
      <property name="title">
       <string>特征提取</string>
      </property>
-     <widget class="QWidget" name="gridLayoutWidget_8">
+     <widget class="QWidget" name="formLayoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>20</y>
         <width>241</width>
-        <height>111</height>
+        <height>211</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout_8">
+      <layout class="QFormLayout" name="formLayout_2">
        <item row="0" column="0">
-        <widget class="QPushButton" name="pushButton_getfeature_input_6">
+        <widget class="QCheckBox" name="checkBox_13">
          <property name="text">
-          <string>Slope坡度提取</string>
+          <string>CheckBox</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QCheckBox" name="checkBox_12">
+         <property name="text">
+          <string>CheckBox</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_aspect">
+         <property name="text">
+          <string>Aspect坡向提取</string>
          </property>
          <property name="default">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QPushButton" name="pushButton_getfeature_input_7">
+       <item row="1" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_slope">
          <property name="text">
-          <string>Aspect坡向提取</string>
+          <string>Slope坡度提取</string>
          </property>
          <property name="default">
           <bool>false</bool>

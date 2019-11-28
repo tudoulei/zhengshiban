@@ -38,7 +38,7 @@ import gdal, ogr, os, osr
 import numpy as np
 import matplotlib.pyplot as plt
 from PyQt5.QtCore import QStringListModel 
-
+from .my_class import *
 try:
     import skimage
     from skimage import io
@@ -234,17 +234,22 @@ class zhengshiban:
         self.dlg.lineEdit_clip_input.setText(filename[0])
 
 
-    def clip_select_input_filename_label(self):
+
+
+    def clip_select_input_filename(self):
         print("select_output_file")
         filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.tif')
 
-        self.dlg.lineEdit_clip_input_label.setText(filename[0])
+        self.dlg.lineEdit_clip_input.setText(filename[0])
 
-    def clip_select_output_filename(self):
+
+
+
+    def dem_select_output_filename(self):
         print("select_output_file")
         filename = QFileDialog.getExistingDirectory(self.dlg, "Select output file ")
 
-        self.dlg.lineEdit_clip_output.setText(filename)
+        self.dlg.lineEdit_dem_output.setText(filename)
         
     def insert_my_layer(self, layers):
         """
@@ -494,9 +499,12 @@ class zhengshiban:
             pca=PCA(n_components=1)
 
             a,b,c  = img.shape
-            pca_img = pca.fit_transform(img.T.reshape(-1,a)).reshape(b,c)
+            res = img[:,img[0,:,:]!=0].T
+            pca_img = pca.fit_transform(res)
+            res_img = np.zeros(img.shape[1:])
+            res_img[img[0,:,:]!=0] = pca_img[:,0]
 
-            out=ga.SaveArray(pca_img,save_dict['PCA'],format = "GTiff",prototype =gdal_data)
+            out=ga.SaveArray(res_img,save_dict['PCA'],format = "GTiff",prototype =gdal_data)
             out=None
             print("PCA success")   
             iface.addRasterLayer(save_dict['PCA'], showname)  
@@ -601,15 +609,17 @@ class zhengshiban:
         output_path = self.dlg.lineEdit_getfeature_output.text()
 
         # todo:加警告框
+        # print(all(check_list),check_list)
         if (output_path is None) or (in_filename is None):
             print('请选择路径')
             QMessageBox.critical(self.iface.helpMenu(),
                                             "错误",
                                             "未输入文件路径！")
-        elif ~all(check_list):
-            QMessageBox.critical(self.iface.helpMenu(),
-                                            "错误",
-                                            "未勾选特征提取方法！")
+        # todo :debug
+        # elif ~any(check_list):
+        #     QMessageBox.critical(self.iface.helpMenu(),
+        #                                     "错误",
+        #                                     "未勾选特征提取方法！")
 
         else:
             self.Calculation_feature_function(in_filename,output_path,labeldict)
@@ -752,6 +762,86 @@ class zhengshiban:
             os.rename(fname1, fname1_new)
             os.rename(fname2, fname2_new) 
 
+   
+
+
+
+    def get_slope_from_dem(self):
+        
+        output_path = self.dlg.lineEdit_dem_output.text()
+
+        DEMFilename = self.dlg.lineEdit_dem_input.text()
+        LandsatFilename =  'D:/data/caijian.tif'
+        slopeFilename = output_path+'/slope_prj.tif'
+        aspectFilename = output_path+'aspect_prj.tif'
+    
+        gdal.AllRegister()
+    
+        data = gdal.Open(DEMFilename, GA_ReadOnly)
+        if data is None:
+            print('Cannot open this file:' + DEMFilename)
+            sys.exit(1)
+    
+        dx = 30  # 分辨率
+    
+        # 投影变换
+        projData = convertProjection(data, LandsatFilename)
+    
+        gridNew = projData.ReadAsArray().astype(np.float)
+    
+        Sx, Sy = calcFiniteSlopes(gridNew, dx)
+        # 坡度计算
+        slope = np.arctan(np.sqrt(Sx ** 2 + Sy ** 2)) * 57.29578
+    
+        # 坡向计算
+        aspect = np.ones([Sx.shape[0], Sx.shape[1]]).astype(np.float32)
+        for i in range(Sx.shape[0]):
+            for j in range(Sy.shape[1]):
+                sx = float(Sx[i, j])
+                sy = float(Sy[i, j])
+                if (sx == 0.0) & (sy == 0.0):
+                    aspect[i, j] = -1
+                elif sx == 0.0:
+                    if sy > 0.0:
+                        aspect[i, j] = 0.0
+                    else:
+                        aspect[i, j] = 180.0
+                elif sy == 0.0:
+                    if sx > 0.0:
+                        aspect[i, j] = 90.0
+                    else:
+                        aspect[i, j] = 270.0
+                else:
+                    aspect[i, j] = float(math.atan2(sy, sx) * 57.29578)
+                    if aspect[i, j] < 0.0:
+                        aspect[i, j] = 90.0 - aspect[i, j]
+                    elif aspect[i, j] > 90.0:
+                        aspect[i, j] = 360.0 - aspect[i, j] + 90.0
+                    else:
+                        aspect[i, j] = 90.0 - aspect[i, j]
+    
+        # 输出坡度坡向文件
+        driver = gdal.GetDriverByName('GTiff')
+        if os.path.exists(slopeFilename):
+            os.remove(slopeFilename)
+        if os.path.exists(aspectFilename):
+            os.remove(aspectFilename)
+    
+        ds1 = driver.Create(slopeFilename, slope.shape[1], slope.shape[0], 1, GDT_Float32)
+        band = ds1.GetRasterBand(1)
+        band.WriteArray(slope, 0, 0)
+    
+        ds2 = driver.Create(aspectFilename, aspect.shape[1], aspect.shape[0], 1, GDT_Float32)
+        band = ds2.GetRasterBand(1)
+        band.WriteArray(aspect, 0, 0)
+    
+        del ds1
+        del ds2
+        data = None
+        projData = None
+
+
+
     def run(self):
         """Run method that performs all the real work"""
 
@@ -804,7 +894,6 @@ class zhengshiban:
         ##################################裁剪图片模块##########################################
         # 读取文件
         self.dlg.pushButton_clip_input.clicked.connect(self.clip_select_input_filename)
-        self.dlg.pushButton_clip_input_label.clicked.connect(self.clip_select_input_filename_label)
         self.dlg.pushButton_clip_output.clicked.connect(self.clip_select_output_filename)
        
         # 按钮
@@ -814,7 +903,18 @@ class zhengshiban:
         self.dlg.pushButton_traintestsplit.clicked.connect(self.traintestsplit_clip)
 
         ############################################################################
+        # 读取文件
+        self.dlg.pushButton_dem_input.clicked.connect(self.dem_select_input_filename)
+        self.dlg.pushButton_dem_output.clicked.connect(self.dem_select_output_filename)
+       
+        # 按钮
+        self.dlg.pushButton_dem.clicked.connect(self.get_slope_from_dem)
 
+        # # 按钮
+        # self.dlg.pushButton_traintestsplit.clicked.connect(self.traintestsplit_dem)
+
+        ##################################DEM##########################################
+        # 读取文件
 
 
         # show the dialog
