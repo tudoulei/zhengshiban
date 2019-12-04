@@ -662,11 +662,7 @@ class zhengshiban:
         
         #实例化列表模型，添加数据
    
-        listView = self.dlg.listView
-        slm = QStringListModel()
-        qList = ['Item 1','Item 2','Item 3','Item 4' ]	
-        slm.setStringList(qList) 
-        listView.setModel(slm ) 
+         
     
         # 
  
@@ -703,11 +699,22 @@ class zhengshiban:
             print('请选择路径')
             QMessageBox.critical(self.dlg,"错误","未输入文件路径！")
         # 一个特征提取都不选就报错
-        elif ~any(check_list):
-            QMessageBox.critical(self.dlg, "错误","未勾选特征提取方法！")
+        # elif ~any(check_list):
+        #     QMessageBox.critical(self.dlg, "错误","未勾选特征提取方法！")
 
         else:
             self.Calculation_feature_function(in_filename,output_path,labeldict)
+            QMessageBox.information(self.dlg,'特征提取','完成！')
+
+        layers = QgsProject.instance().mapLayers().values()
+        layer_list = []
+        for layer in layers:
+            layer_list.append(layer.name())
+        listView = self.dlg.listView
+        slm = QStringListModel()
+        qList = layer_list
+        slm.setStringList(qList) 
+        listView.setModel(slm )
 
 
 
@@ -803,6 +810,8 @@ class zhengshiban:
                 cx+=step
             cy+=step
         pbar.setValue(100)
+        QMessageBox.information(self.dlg,'训练集验证集分割图片裁剪','完成！')
+        
 
         
     def traintestsplit_clip(self):
@@ -846,6 +855,8 @@ class zhengshiban:
             
             os.rename(fname1, fname1_new)
             os.rename(fname2, fname2_new) 
+
+        QMessageBox.information(self.dlg,'训练集验证集分割','完成！')
 
    
 
@@ -964,6 +975,11 @@ class zhengshiban:
             #提示信息弹窗，你选择的信息
             QMessageBox.information(self.dlg,'ListWidget','你选择了：' + self.qList[qModelIndex.row()])
 
+    # todo 图像融合
+    def imagefusion(self):
+
+        pass
+
     def run(self):
         """Run method that performs all the real work"""
 
@@ -1037,6 +1053,10 @@ class zhengshiban:
         # self.dlg.pushButton_traintestsplit.clicked.connect(self.traintestsplit_dem)
 
         ##################################DEM##########################################
+
+        #################################图像融合#################################
+        # 按钮
+        self.dlg.pushButton_imagefusion.clicked.connect(self.imagefusion)
         # 读取文件
 
 
