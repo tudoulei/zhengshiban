@@ -330,9 +330,9 @@ class zhengshiban:
 
     def dem_select_input_filename(self):
         print("select_output_file")
-        filename = QFileDialog.getExistingDirectory(self.dlg, "Select output file ")
+        filename = QFileDialog.getOpenFileName(self.dlg, "Select input file ","", '*.tif')
      
-        self.dlg.lineEdit_dem_input.setText(filename)
+        self.dlg.lineEdit_dem_input.setText(filename[0])
 
     def dem_select_output_filename(self):
         print("select_output_file")
